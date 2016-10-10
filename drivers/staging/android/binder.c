@@ -3420,7 +3420,7 @@ static int binder_mmap(struct file *filp, struct vm_area_struct *vma)
 	vma->vm_flags = (vma->vm_flags | VM_DONTCOPY) & ~VM_MAYWRITE;
 
 	mutex_lock(&binder_mmap_lock);
-	if (proc->buffer) {
+	if (proc->alloc.buffer) {
 		ret = -EBUSY;
 		failure_string = "already mapped";
 		goto err_already_mapped;
@@ -3432,8 +3432,9 @@ static int binder_mmap(struct file *filp, struct vm_area_struct *vma)
 		failure_string = "get_vm_area";
 		goto err_get_vm_area_failed;
 	}
-	proc->buffer = area->addr;
-	proc->user_buffer_offset = vma->vm_start - (uintptr_t)proc->buffer;
+	proc->alloc.buffer = area->addr;
+	proc->alloc.user_buffer_offset =
+		vma->vm_start - (uintptr_t)proc->alloc.buffer;
 	mutex_unlock(&binder_mmap_lock);
 
 #ifdef CONFIG_CPU_CACHE_VIPT
@@ -3488,8 +3489,8 @@ err_alloc_small_buf_failed:
 	proc->alloc.pages = NULL;
 err_alloc_pages_failed:
 	mutex_lock(&binder_mmap_lock);
-	vfree(proc->buffer);
-	proc->buffer = NULL;
+	vfree(proc->alloc.buffer);
+	proc->alloc.buffer = NULL;
 err_get_vm_area_failed:
 err_already_mapped:
 	mutex_unlock(&binder_mmap_lock);
