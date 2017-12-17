@@ -135,6 +135,7 @@ struct sg_fd;
 typedef struct sg_request {	/* SG_MAX_QUEUE requests outstanding per file */
 	struct list_head entry;	/* list entry */
 	struct sg_fd *parentfp;	/* NULL -> not in use */
+	struct sg_request *nextrp;	/* NULL -> tail request (slist) */
 	Sg_scatter_hold data;	/* hold buffer, perhaps scatter list */
 	sg_io_hdr_t header;	/* scsi command+info, see <scsi/sg.h> */
 	unsigned char sense_b[SCSI_SENSE_BUFFERSIZE];
@@ -154,6 +155,7 @@ typedef struct sg_fd {		/* holds the state of a file descriptor */
 	wait_queue_head_t read_wait;	/* queue read until command done */
 	rwlock_t rq_list_lock;	/* protect access to list in req_arr */
 	struct mutex f_mutex;	/* protect against changes in this fd */
+	Sg_request *headrp;	/* head of request slist, NULL->empty */
 	int timeout;		/* defaults to SG_DEFAULT_TIMEOUT      */
 	int timeout_user;	/* defaults to SG_DEFAULT_TIMEOUT_USER */
 	Sg_scatter_hold reserve;	/* buffer held for this file descriptor */
@@ -1088,7 +1090,7 @@ sg_ioctl(struct file *filp, unsigned int cmd_in, unsigned long arg)
 			return -EFAULT;
 		else {
 			sg_req_info_t *rinfo;
-
+			unsigned int ms;
 			rinfo = kzalloc(SZ_SG_REQ_INFO * SG_MAX_QUEUE,
 					GFP_KERNEL);
 			if (!rinfo)
