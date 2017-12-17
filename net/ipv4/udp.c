@@ -107,6 +107,7 @@
 #include <net/icmp.h>
 #include <net/inet_hashtables.h>
 #include <net/route.h>
+#include <net/ip.h>
 #include <net/checksum.h>
 #include <net/xfrm.h>
 #include <trace/events/udp.h>

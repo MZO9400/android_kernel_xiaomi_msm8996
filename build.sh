@@ -23,7 +23,7 @@ make clean
 make mrproper
 make capricorn_defconfig
 if [ -f ../lastlog ]; then rm ../lastlog; fi
-time make -j$(nproc) | tee -a ../lastlog
+time make -j$(nproc) |& tee -a ../lastlog
 
 if [ -f $KERNEL_DIR/../out/arch/arm64/boot/Image.gz-dtb ]
    then

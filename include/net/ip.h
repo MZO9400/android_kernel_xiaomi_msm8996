@@ -549,6 +549,7 @@ void ip_local_error(struct sock *sk, int err, __be32 daddr, __be16 dport,
 bool icmp_global_allow(void);
 extern int sysctl_icmp_msgs_per_sec;
 extern int sysctl_icmp_msgs_burst;
+extern int sysctl_reserved_port_bind;
 
 #ifdef CONFIG_PROC_FS
 int ip_misc_proc_init(void);
