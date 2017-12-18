@@ -63,7 +63,6 @@
 
 #include <trace/events/task.h>
 #include "internal.h"
-
 #include <trace/events/sched.h>
 
 int suid_dumpable = 0;
