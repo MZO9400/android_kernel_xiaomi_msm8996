@@ -1,0 +1,4 @@
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-3.18.y --tags
+export sl=$(cat Makefile | head -3 | tail -1 | sed 's/.*= //')
+export sln=$(expr $sl + 1)
+git cherry-pick v3.18.$sl..v3.18.$sln
