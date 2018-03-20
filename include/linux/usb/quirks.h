@@ -39,7 +39,7 @@
  * Devices with this quirk report their bInterval as the result of this
  * calculation instead of the exponent variable used in the calculation.
  */
-#define USB_QUIRK_LINEAR_UFRAME_INTR_BINTERVAL	BIT(7)
+#define USB_QUIRK_LINEAR_FRAME_INTR_BINTERVAL	BIT(11)
 
 /* device can't handle device_qualifier descriptor requests */
 #define USB_QUIRK_DEVICE_QUALIFIER		BIT(8)
@@ -49,5 +49,8 @@
 
 /* device can't handle Link Power Management */
 #define USB_QUIRK_NO_LPM			BIT(10)
+
+/* Device needs a pause after every control message. */
+#define USB_QUIRK_DELAY_CTRL_MSG		BIT(13)
 
 #endif /* __LINUX_USB_QUIRKS_H */
