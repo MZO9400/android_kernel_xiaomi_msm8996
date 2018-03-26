@@ -183,7 +183,7 @@ static struct page **get_pages(struct drm_gem_object *obj)
 		}
 
 		msm_obj->pages = p;
-	}
+3	}
 
 	return msm_obj->pages;
 }
